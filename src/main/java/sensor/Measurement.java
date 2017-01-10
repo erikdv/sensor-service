@@ -9,15 +9,15 @@ public class Measurement {
     private long value;
 
 
+    public Measurement() {
+
+    }
     public Measurement(Timestamp timestamp, long value) {
         this.timestamp = timestamp;
         this.value = value;
     }
     
-    public Measurement() {
-    
-    }
-    
+
     public Timestamp getTimestamp() {
         return timestamp;
     }

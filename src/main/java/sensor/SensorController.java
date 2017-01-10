@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SensorController {
 
-	final Map<String, List<Measurement>> measurementsMap= new HashMap<String,List<Measurement>>();
+	final Map<String, List<Measurement>> measurementsMapOut= new HashMap<String,List<Measurement>>();
 	List measurements = new ArrayList<Measurement>();
 	@RequestMapping("/sensors")
    public ResponseEntity<Map<String,List<Measurement>>> sensor() {
@@ -28,19 +28,23 @@ public class SensorController {
     	
     	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     	
-    	return new ResponseEntity<Map<String,List<Measurement>>>(measurementsMap, HttpStatus.OK);
+    	return new ResponseEntity<Map<String,List<Measurement>>>(measurementsMapOut, HttpStatus.OK);
     	//return sensorMap;
     	
     }
-   @RequestMapping(value = "/sensors", method = RequestMethod.POST)
-   public ResponseEntity<Measurement> update(@RequestBody Measurement measurement) {
 	
-	measurements.add(measurement);	   
-	measurementsMap.put("measurements", measurements);   
+   @RequestMapping(value = "/sensors", method = RequestMethod.POST)
+   public ResponseEntity<Map<String, Measurement>> update(@RequestBody Map<String, Measurement> measurementMapIn) {
+	
+	for (Entry<String, Measurement> entry : measurementMapIn.entrySet()) {
+		
+		measurements.add(entry.getValue());
+		measurementsMapOut.put(entry.getKey(), (List<Measurement>) measurements);
+	}
 	   
-   	return new ResponseEntity<Measurement>(measurement, HttpStatus.OK);
+   	return new ResponseEntity<Map<String, Measurement>>(measurementMapIn, HttpStatus.OK);
        
    }
 
-
+   
 }
