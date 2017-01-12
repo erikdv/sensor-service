@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 public class Measurement {
 
     private Timestamp timestamp;
-    private long value;
+    private float value;
 
 
     public Measurement() {
@@ -24,11 +24,11 @@ public class Measurement {
         this.timestamp =  timestamp;
     }
 
-    public long getValue() {
+    public float getValue() {
         return value;
     }
     
-    public void setValue(long value) {
+    public void setValue(float value) {
         this.value =  value;
     }
     
