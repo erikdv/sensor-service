@@ -16,7 +16,6 @@ public class Measurement {
         this.timestamp = timestamp;
         this.value = value;
     }
-    
 
     public Timestamp getTimestamp() {
         return timestamp;

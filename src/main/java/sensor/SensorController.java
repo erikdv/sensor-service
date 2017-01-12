@@ -21,12 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SensorController {
 
 	final Map<String, List<Measurement>> measurementsMapOut= new HashMap<String,List<Measurement>>();
-	List measurements = new ArrayList<Measurement>();
+	
 	@RequestMapping("/sensors")
    public ResponseEntity<Map<String,List<Measurement>>> sensor() {
-
-    	
-    	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     	
     	return new ResponseEntity<Map<String,List<Measurement>>>(measurementsMapOut, HttpStatus.OK);
     	//return sensorMap;
@@ -36,11 +33,24 @@ public class SensorController {
    @RequestMapping(value = "/sensors", method = RequestMethod.POST)
    public ResponseEntity<Map<String, Measurement>> update(@RequestBody Map<String, Measurement> measurementMapIn) {
 	
-	for (Entry<String, Measurement> entry : measurementMapIn.entrySet()) {
-		
-		measurements.add(entry.getValue());
-		measurementsMapOut.put(entry.getKey(), (List<Measurement>) measurements);
-	}
+	   Map.Entry<String, Measurement> entry = measurementMapIn.entrySet().iterator().next();
+	  
+	   if (measurementsMapOut.get(entry.getKey()) == null) {
+		   List measurements = new ArrayList<Measurement>();
+		   measurements.add(entry.getValue());
+		   measurementsMapOut.put(entry.getKey(), (List<Measurement>) measurements);
+		  
+	   }
+	   else {
+
+		   measurementsMapOut.get(entry.getKey()).add(entry.getValue());
+	   
+	   }
+//	for (Entry<String, Measurement> entry : measurementMapIn.entrySet()) {
+//		
+//		measurements.add(entry.getValue());
+//		measurementsMapOut.put(entry.getKey(), (List<Measurement>) measurements);
+//	}
 	   
    	return new ResponseEntity<Map<String, Measurement>>(measurementMapIn, HttpStatus.OK);
        
